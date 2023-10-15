@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      MONGODB_CLIENT_URL: ${MONGODB_CLIENT_URL}
+      MONGO_CLIENT_URL: ${MONGO_CLIENT_URL}
     env_file:
       - .env
     ports:
@@ -34,7 +34,7 @@ services:
       context: .
       dockerfile: seed.Dockerfile
     environment:
-      MONGODB_CLIENT_URL: ${MONGODB_CLIENT_URL}
+      MONGO_CLIENT_URL: ${MONGO_CLIENT_URL}
     env_file:
       - .env
     networks:
