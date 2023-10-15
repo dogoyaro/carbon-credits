@@ -1,18 +1,7 @@
 import Image from 'next/image';
-interface IProjectProps {
-  id: string;
-  name: string;
-  description: string;
-  weight: number;
-  price: number;
-  volume: number;
-  image: string;
-  supplier: string;
-  country: string;
-  date: string;
-}
+import type {Project} from '@/types';
 
-export function Project(props: IProjectProps) {
+export function Project(props: Project) {
   const {
     id,
     name,
@@ -60,7 +49,7 @@ export function Project(props: IProjectProps) {
   );
 }
 
-export function ProjectList(props: {projects: IProjectProps[]}) {
+export function ProjectList(props: {projects: Project[]}) {
   const {projects} = props;
   return (
     <div>
