@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "up": "make up",
+    "down": "make down"
   },
   "dependencies": {
     "mongodb": "^6.1.0",
