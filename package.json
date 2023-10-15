@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
     "up": "make up",
     "down": "make down"
   },
@@ -30,6 +31,8 @@
     "csv-parser": "^3.0.0",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "jsdom": "^22.1.0",
+    "next-router-mock": "^0.9.10",
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5",
