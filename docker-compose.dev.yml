@@ -1,8 +1,47 @@
 version: '3'
 services:
   mongodb:
+    container_name: mongodb
     image: mongo
     ports:
       - 27017:27017
     volumes:
       - ./data:/data/db
+    networks:
+      - app_network
+
+  nextjs-app:
+    container_name: carbon-credits
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGODB_CLIENT_URL: ${MONGODB_CLIENT_URL}
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    restart: always
+    volumes:
+      - ./nextjs-app/src:/app/src
+      - ./nextjs-app/public:/app/public
+    networks:
+      - app_network
+
+  seed-script:
+    container_name: seed-script
+    build:
+      context: .
+      dockerfile: seed.Dockerfile
+    environment:
+      MONGODB_CLIENT_URL: ${MONGODB_CLIENT_URL}
+    env_file:
+      - .env
+    networks:
+      - app_network
+    depends_on:
+      - mongodb
+
+networks:
+  app_network:
+    external: true
