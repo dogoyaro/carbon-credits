@@ -2,9 +2,9 @@ export interface Project {
   id: string;
   name: string;
   description: string;
-  weight: number;
+  distribution_weight: number;
   price: number;
-  volume: number;
+  offered_volume_in_tons: number;
   image: string;
   supplier: string;
   country: string;
