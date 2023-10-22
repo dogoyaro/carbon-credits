@@ -3,10 +3,10 @@ export interface Project {
   name: string;
   description: string;
   distribution_weight: number;
-  price: number;
+  price_per_ton: number;
   offered_volume_in_tons: number;
   image: string;
-  supplier: string;
+  supplier_name: string;
   country: string;
-  date: string;
+  earliest_delivery: string;
 }

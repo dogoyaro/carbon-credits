@@ -11,10 +11,9 @@ export async function getPortfolio(tonnage: number) {
   const projectIterator = await getProjects();
   const projects = await getMaximumTonnage(projectIterator, tonnage);
 
-  // logging the projects
-  console.log('the projects', projects);
+  // console.log('the projects', projects);
   return {
-    projects: [],
+    projects,
     price: 0,
     tonnage: 0
   };
@@ -24,34 +23,32 @@ async function getMaximumTonnage(
   projects: AsyncIterableIterator<Project>,
   tonnage: number
 ): Promise<Project[]> {
-  const dp = new Map();
-
-  for await (const project of projects) {
-    const distributionWeight = Number(project.distribution_weight);
-    const volume = Number(project.offered_volume_in_tons);
-    const offeredVolume = volume * distributionWeight;
-
-    if (offeredVolume >= tonnage) {
-      return [project];
-    }
-
-    const currentMaxPerProject = dp.keys();
-    const distributedVolume = distributionWeight * tonnage;
-
-    for (const weight of currentMaxPerProject) {
-      const currentMaximum = dp.get(weight);
-
-      const previousPotentialMaximum = dp.get(weight - distributionWeight);
-      if (previousPotentialMaximum) {
-        const potentialMaximum = previousPotentialMaximum + distributedVolume;
-        if (potentialMaximum > currentMaximum) {
-          dp.set(weight, potentialMaximum);
-        }
-      } else {
-        dp.set(distributionWeight, distributedVolume);
+  const dp = {
+    map: new Map(),
+    keys: [] as number[],
+    get(key: number) {
+      let current = dp.map.get(key);
+      if (!current) {
+        current = [0, []];
       }
+
+      return current;
+    },
+    set(key: number, [total, project]: [number, Project]) {
+      const [_, currentProjects] = dp.get(key);
+      dp.map.set(key, [total, [...currentProjects, project]]);
+      dp.keys.push(key);
     }
+  };
+
+  let portfolio: Project[] = [];
+  for await (const project of projects) {
+    const weight = Number(project.distribution_weight);
+    const volume = Number(project.offered_volume_in_tons);
+    const distributedVolume = weight * tonnage;
+
+    portfolio.push(project);
   }
 
-  return [];
+  return portfolio;
 }
