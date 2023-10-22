@@ -18,7 +18,7 @@ export function Project(props: Project) {
   return (
     <div className='flex flex-row px-3 gap-16 justify-center p-8 group rounded hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
       <Image
-        className='h-64 w-64 m-8'
+        className='rounded h-64 w-64 m-8'
         src={image}
         alt={`${id}-${name}-image`}
         width={100}
