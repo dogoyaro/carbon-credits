@@ -7,7 +7,7 @@ export default async function Portfolio({params}: {params: {tonnage: number}}) {
   const {price, tonnage: totalTonnage, projects} = portfolio;
 
   return (
-    <div>
+    <main className='flex min-h-screen flex-col'>
       <div className='p-24 mb-8  bg-zinc-300  backdrop-blur-2xl flex items-start jusify-start gap-12'>
         <h1 className='text-4xl font-bold text-center'>
           Recommended Portfolio
@@ -22,6 +22,6 @@ export default async function Portfolio({params}: {params: {tonnage: number}}) {
         </div>
       </div>
       <ProjectList projects={projects} />
-    </div>
+    </main>
   );
 }
