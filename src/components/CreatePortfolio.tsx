@@ -2,16 +2,16 @@
 
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
+import {z} from 'zod';
+
+const Tonnage = z.coerce.number().min(1).max(1000000);
 
 export function CreatePortfolioButton() {
   const [totalTonnage, setTotalTonnage] = useState(null);
+  const [disabled, setDisabled] = useState(true);
   const router = useRouter();
 
   const handleCreatePortfolio = () => {
-    if (totalTonnage === null) {
-      return;
-    }
-
     router.push(`/portfolio/${totalTonnage}`);
   };
 
@@ -20,10 +20,13 @@ export function CreatePortfolioButton() {
 
     const tonnage = event.target.value;
 
-    // TODO: validate the input
-    // validate the input
-
-    setTotalTonnage(tonnage);
+    const isValid = Tonnage.safeParse(tonnage).success;
+    if (isValid) {
+      setDisabled(false);
+      setTotalTonnage(tonnage);
+    } else {
+      setDisabled(true);
+    }
   };
 
   return (
@@ -35,8 +38,11 @@ export function CreatePortfolioButton() {
         onChange={handleTonnageChange}
       />
       <button
-        className='rounded bg-green-700 px-2 text-stone-200'
+        className={`rounded bg-${
+          disabled ? 'green-300' : 'green-700'
+        } px-2 text-stone-200 ${disabled && 'cursor-not-allowed'}`}
         onClick={handleCreatePortfolio}
+        disabled={disabled}
       >
         Portfolio
       </button>
