@@ -24,9 +24,7 @@ function summarizePortfolio(projects: Project[]) {
 }
 
 export async function getPortfolio(maxTons: number) {
-  const projectIterator = await getProjects();
-  const projects = await getMaximumTonnage(projectIterator, maxTons);
-
+  const projects = await getMaximumTonnage(maxTons);
   const {price, tonnage} = summarizePortfolio(projects);
 
   // console.log('the projects', projects);
@@ -38,6 +36,7 @@ export async function getPortfolio(maxTons: number) {
 }
 
 export async function getAllProjects() {
+  // todo: add support for pagination, sorting, and filtering
   const projects = (await getProjects()).toArray();
   return projects;
 }

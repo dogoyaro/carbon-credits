@@ -1,6 +1,11 @@
 import type {Project} from '@/types';
+import {getProjects} from '@/lib/database';
+import {
+  getMaximumTonnage as getCachedMaximumTonnage,
+  setMaximumTonnage
+} from '@/lib/redis';
 
-export async function getMaximumTonnage(
+export async function calculateMaximumTonnage(
   projects: AsyncIterableIterator<Project>,
   tonnage: number
 ): Promise<Project[]> {
@@ -32,4 +37,14 @@ export async function getMaximumTonnage(
   }
 
   return portfolio;
+}
+
+export async function getMaximumTonnage(tonnage: number) {
+  let cached = await getCachedMaximumTonnage(tonnage);
+  if (!cached) {
+    const projectIterator = await getProjects();
+    cached = await calculateMaximumTonnage(projectIterator, tonnage);
+    setMaximumTonnage(tonnage, cached);
+  }
+  return cached;
 }

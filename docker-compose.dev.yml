@@ -27,6 +27,9 @@ services:
       - ./nextjs-app/public:/app/public
     networks:
       - app_network
+    depends_on:
+      - mongodb
+      - redis
 
   seed-script:
     container_name: seed-script
@@ -41,6 +44,16 @@ services:
       - app_network
     depends_on:
       - mongodb
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - app_network
+    volumes:
+      - ./redis-data:/data
 
 networks:
   app_network:

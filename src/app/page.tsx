@@ -12,3 +12,6 @@ export default async function Home() {
     </main>
   );
 }
+
+// TODO: Research how to do SSG when using external services
+export const dynamic = 'force-dynamic';

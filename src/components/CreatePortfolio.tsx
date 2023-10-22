@@ -11,7 +11,9 @@ export function CreatePortfolioButton() {
   const [disabled, setDisabled] = useState(true);
   const router = useRouter();
 
+  // TODO: Semantically more correct to use a form here. Can be done with NextJs Server actions.
   const handleCreatePortfolio = () => {
+    // todo: invaliate cache
     router.push(`/portfolio/${totalTonnage}`);
   };
 
