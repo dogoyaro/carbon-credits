@@ -10,3 +10,7 @@ export interface Project {
   country: string;
   earliest_delivery: string;
 }
+
+export interface PortfolioProject extends Project {
+  volume: number;
+}
