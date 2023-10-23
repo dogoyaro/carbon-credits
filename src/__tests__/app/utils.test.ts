@@ -1,6 +1,8 @@
 import type {Project} from '@/types';
 import {calculateMaximumTonnage, summarizePortfolio} from '@/app/utils';
-import {test, expect} from 'vitest';
+import {vi, test, expect} from 'vitest';
+
+vi.mock('mongodb');
 
 async function* projects(projects: Project[]) {
   for (let i = 0; i < projects.length; i++) {
