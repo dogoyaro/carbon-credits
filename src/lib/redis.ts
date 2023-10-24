@@ -3,10 +3,14 @@ import type {Project} from '../types';
 
 let client: ReturnType<typeof createClient>;
 
+if (!process.env.REDIS_CLIENT_URL) {
+  throw new Error('Please specify a valid REDIS_CLIENT_URL');
+}
+
 export async function getClient() {
   if (!client) {
     client = await createClient({
-      url: 'redis://localhost:6379'
+      url: process.env.REDIS_CLIENT_URL
     }).connect();
   }
 

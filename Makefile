@@ -16,3 +16,6 @@ create-network:
 	@if [ -z $$(docker network ls -q -f name=$(NETWORK_NAME)) ]; then \
 		docker network create $(NETWORK_NAME); \
 	fi
+
+test:
+	yarn && yarn test

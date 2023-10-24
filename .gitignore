@@ -37,3 +37,4 @@ data/
 .env
 .vscode/
 ./redis-data
+redis-data/
