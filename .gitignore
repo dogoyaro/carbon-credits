@@ -34,7 +34,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 data/
-.env
 .vscode/
 ./redis-data
 redis-data/

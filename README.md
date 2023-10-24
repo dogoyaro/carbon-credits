@@ -4,13 +4,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 To run the project:
 
-- copy the
-
 ```bash
    $ make up
 
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 To stop the project:
@@ -50,6 +47,7 @@ Due to the highly inefficient nature of the solution, a caching layer to provide
 - I would take more time to device a more efficient algorithm for calculating the Maximum provideable tonnage
 - More controls for interacting with the data by the user, like recommendations based on minimised price, pagination on project views, etc.
 - Reduction of the impedance mismatch between the Data layer and the implementation by adding a Schema using Mongoose, etc.
+- Properly secure the database and redis with authentication. 
 
 ### Built With:
 
