@@ -11,7 +11,7 @@ export async function calculateMaximumTonnage(
 ): Promise<PortfolioProject[]> {
   const dp = {
     map: new Map(),
-    keys: [] as number[],
+    keys: new Set<number>([0]),
     get(key: number) {
       let current = dp.map.get(key);
       if (!current) {
@@ -20,23 +20,33 @@ export async function calculateMaximumTonnage(
 
       return current;
     },
-    set(key: number, [total, project]: [number, Project]) {
-      const [_, currentProjects] = dp.get(key);
-      dp.map.set(key, [total, [...currentProjects, project]]);
-      dp.keys.push(key);
+    set(key: number, [total, projects]: [number, Project[]]) {
+      dp.map.set(key, [total, projects]);
+      dp.keys.add(key);
     }
   };
 
-  let portfolio: PortfolioProject[] = [];
   for await (const project of projects) {
     const weight = Number(project.distribution_weight);
     const volume = Number(project.offered_volume_in_tons);
     const distributedVolume = weight * tonnage;
 
-    portfolio.push({...project, volume: distributedVolume});
+    if (distributedVolume < volume) {
+      for (const key of [...dp.keys.keys()]) {
+        const previousMax = dp.get(key + weight);
+        const possibleMax = dp.get(key)[0] + distributedVolume;
+        if (previousMax[0] < possibleMax) {
+          const previousProjects = dp.get(key)[1];
+          dp.set(key + weight, [
+            dp.get(key)[0] + distributedVolume,
+            previousProjects.concat({...project, volume: distributedVolume})
+          ]);
+        }
+      }
+    }
   }
 
-  return portfolio;
+  return dp.get(1)[1];
 }
 
 export async function getMaximumTonnage(tonnage: number) {
@@ -55,7 +65,7 @@ export function summarizePortfolio(projects: PortfolioProject[]) {
       const volume = project.volume;
       const price = Number(project.price_per_ton) * volume;
       return {
-        price: acc.price + price,
+        price: acc.price + volume * price,
         tonnage: acc.tonnage + volume
       };
     },
