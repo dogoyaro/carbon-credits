@@ -10,25 +10,66 @@ async function* projects(projects: Project[]) {
   }
 }
 
-test('calculates the maximum tonnage given projects and a maximum number of tons', async () => {
-  const portfolio = await calculateMaximumTonnage(projects([]), 100);
-  const {tonnage} = summarizePortfolio(portfolio);
-  expect(tonnage).toBe(100);
-});
+const projectList = [
+  {
+    id: '5',
+    name: 'EverGreen Carbon',
+    country: 'Egipt',
+    image:
+      'https://ceezer-public-assets.s3.eu-central-1.amazonaws.com/project_type_sample_images/Renewable+energy/andreas-gucklhorn-Ilpf2eUPpUE-unsplash-min.jpg',
+    price_per_ton: '10.5',
+    offered_volume_in_tons: '16000',
+    distribution_weight: '0.55',
+    supplier_name: 'Carbon Solutions',
+    earliest_delivery: '2023-12-01',
+    description:
+      'The "EverGreen Carbon" project is a transformative carbon credit initiative aimed at restoring and maintaining vital forest ecosystems.\n' +
+      "Through reforestation, afforestation, and sustainable forest management, we will sequester significant carbon dioxide, enhance biodiversity, empower local communities, and combat deforestation. Verified carbon credits will be generated, reflecting the project's positive impact on the environment. Join us in creating a sustainable and greener future with EverGreen Carbon."
+  },
+  {
+    id: '5',
+    name: 'EverGreen Carbon',
+    country: 'Egipt',
+    image:
+      'https://ceezer-public-assets.s3.eu-central-1.amazonaws.com/project_type_sample_images/Renewable+energy/andreas-gucklhorn-Ilpf2eUPpUE-unsplash-min.jpg',
+    price_per_ton: '10.5',
+    offered_volume_in_tons: '16000',
+    distribution_weight: '0.45',
+    supplier_name: 'Carbon Solutions',
+    earliest_delivery: '2023-12-01',
+    description:
+      'The "EverGreen Carbon" project is a transformative carbon credit initiative aimed at restoring and maintaining vital forest ecosystems.\n' +
+      "Through reforestation, afforestation, and sustainable forest management, we will sequester significant carbon dioxide, enhance biodiversity, empower local communities, and combat deforestation. Verified carbon credits will be generated, reflecting the project's positive impact on the environment. Join us in creating a sustainable and greener future with EverGreen Carbon."
+  },
+  {
+    id: '5',
+    name: 'EverGreen Carbon',
+    country: 'Egipt',
+    image:
+      'https://ceezer-public-assets.s3.eu-central-1.amazonaws.com/project_type_sample_images/Renewable+energy/andreas-gucklhorn-Ilpf2eUPpUE-unsplash-min.jpg',
+    price_per_ton: '10.5',
+    offered_volume_in_tons: '16000',
+    distribution_weight: '0.05',
+    supplier_name: 'Carbon Solutions',
+    earliest_delivery: '2023-12-01',
+    description:
+      'The "EverGreen Carbon" project is a transformative carbon credit initiative aimed at restoring and maintaining vital forest ecosystems.\n' +
+      "Through reforestation, afforestation, and sustainable forest management, we will sequester significant carbon dioxide, enhance biodiversity, empower local communities, and combat deforestation. Verified carbon credits will be generated, reflecting the project's positive impact on the environment. Join us in creating a sustainable and greener future with EverGreen Carbon."
+  }
+];
 
-test('returns the tonnage from a single project when it offers the full volume', async () => {
-  const portfolio = await calculateMaximumTonnage(projects([]), 100);
+test('calculates the maximum tonnage given projects and a maximum number of tons', async () => {
+  const portfolio = await calculateMaximumTonnage(projects(projectList), 100);
   const {tonnage} = summarizePortfolio(portfolio);
   expect(tonnage).toBe(100);
-  expect(portfolio.length).toBe(1);
 });
 
 test('recommends projects in the portfolio proportional to the distribution weight', async () => {
-  const portfolio = await calculateMaximumTonnage(projects([]), 100);
+  const portfolio = await calculateMaximumTonnage(projects(projectList), 100);
   const {tonnage} = summarizePortfolio(portfolio);
   portfolio.forEach((project) => {
     const {distribution_weight, volume} = project;
-    expect(distribution_weight * tonnage).toBe(volume);
+    expect(Number(distribution_weight) * tonnage).toBe(volume);
   });
   expect(tonnage).toBeLessThanOrEqual(100);
 });

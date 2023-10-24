@@ -36,6 +36,7 @@ export async function getProjects(): Promise<FindCursor<any>> {
   const db = databaseClient.db('carbon-credits');
 
   const sort = {
+    offered_volume_in_tons: SortOrder.DESC,
     distribution_weight: SortOrder.DESC
   };
   return db.collection('projects').find().sort(sort);

@@ -53,7 +53,15 @@ export async function getMaximumTonnage(tonnage: number) {
   let cached = await getCachedMaximumTonnage(tonnage);
   if (!cached) {
     const projectIterator = await getProjects();
-    cached = await calculateMaximumTonnage(projectIterator, tonnage);
+    const maxProject = await projectIterator.next();
+    const {offered_volume_in_tons} = maxProject.value;
+
+    const maxTonnage = Number(offered_volume_in_tons);
+    if (maxTonnage > tonnage) {
+      cached = [{...maxProject.value, volume: tonnage}];
+    } else {
+      cached = await calculateMaximumTonnage(projectIterator, tonnage);
+    }
     setMaximumTonnage(tonnage, cached);
   }
   return cached;
